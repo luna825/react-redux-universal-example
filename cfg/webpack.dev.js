@@ -19,7 +19,8 @@ const config = {
         exclude:/node_modules/,
         loader: 'babel-loader',
         query:{
-          presets:['react', 'es2015', 'stage-0']
+          presets:['react', 'es2015', 'stage-0'],
+          plugins:[]
         }
       }
     ]
@@ -31,6 +32,23 @@ const config = {
       }
     })
   ]
+}
+
+
+//hotreplace
+if(process.env.NODE_ENV !== 'production'){
+  config.devtool = 'eval';
+  config.entry.unshift ('webpack-hot-middleware/client');
+  config.plugins.unshift(new webpack.HotModuleReplacementPlugin());
+  config.module.loaders[0].query.plugins.push([
+    'react-transform', {
+      transforms: [{
+        transform : 'react-transform-hmr',
+        imports   : ['react'],
+        locals    : ['module']
+      }]
+    }
+  ]);
 }
 
 module.exports = config
