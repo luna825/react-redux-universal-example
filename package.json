@@ -1,0 +1,34 @@
+{
+  "name": "react-redux-universal-example",
+  "version": "1.0.0",
+  "description": "> 最近一直在学习React，后来在github的看到了一个比较全面的react redux HotReplace的模板[https://github.com/erikras/react-redux-universal-hot-example](https://github.com/erikras/react-redux-universal-hot-example)。刚开始一直看不懂，后来慢慢研究，一步一步coding，终于学会一些，最后终于实现了和作者一样的app。   \r > 这里我将我的学习过程记录下来：一是还有许多只是实现，但并不知道是为什么这样写，供以后备查。二是分享,正如APP作者[erikras](https://github.com/erikras)，所说的那样“这是一个把各种react开发过程中所用的库连接起来的应用，他们可能会很快不流行，但我认为这是react未来发展的方向，并生存好几年，所以构建这个项目。”   \r > **PS:吐槽一下，Coding过程中出现问题百度基本没用，只有靠google,不仅要翻墙还他妈全是英文的回答**",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build":"webpack --verbose --color --display-error-details --config ./cfg/webpack.dev.js "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luna825/react-redux-universal-example.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/luna825/react-redux-universal-example/issues"
+  },
+  "homepage": "https://github.com/luna825/react-redux-universal-example#readme",
+  "devDependencies": {
+    "babel-cli": "^6.14.0",
+    "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-react": "^6.11.1",
+    "babel-preset-stage-0": "^6.5.0",
+    "webpack": "^1.13.2"
+  },
+  "dependencies": {
+    "react": "^15.3.1",
+    "react-dom": "^15.3.1"
+  }
+}
