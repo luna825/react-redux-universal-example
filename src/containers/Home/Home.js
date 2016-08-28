@@ -1,9 +1,11 @@
 import React ,{Component, PropTypes} from 'react'
 
+import {Counter} from 'components'
+
 export default class Home extends Component {
   render(){
     return(
-      <h1>This is Home Page</h1>
+      <div><Counter /></div>
     )
   }
 }

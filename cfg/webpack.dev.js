@@ -20,10 +20,17 @@ const config = {
         loader: 'babel-loader',
         query:{
           presets:['react', 'es2015', 'stage-0'],
-          plugins:[]
+          plugins:['transform-decorators-legacy']
         }
       }
     ]
+  },
+  resolve: {
+    modulesDirectories: [
+      'src',
+      'node_modules'
+    ],
+    extensions: ['', '.json', '.js', '.jsx']
   },
   plugins:[
     new webpack.DefinePlugin({
