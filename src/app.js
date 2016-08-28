@@ -1,4 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import {Router, browserHistory} from 'react-router'
 
-ReactDOM.render(<h1>Hello111</h1>, document.getElementById('app'))
+import routes from './routes'
+
+ReactDOM.render(
+  <Router history={browserHistory}>
+    {routes}
+  </Router>
+  ,document.getElementById('app'))
