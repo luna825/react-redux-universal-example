@@ -6,16 +6,25 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --verbose --color --display-error-details --config ./cfg/webpack.dev.js ",
-    "start-dev": "better-npm-run start-dev"
+    "start-dev": "better-npm-run start-dev",
+    "start-api": "better-npm-run start-api",
+    "dev": "concurrently --kill-others \"npm run start-dev\" \"npm run start-api\""
   },
   "betterScripts": {
     "start-dev": {
-      "command": "babel-node ./src/server.js",
+      "command": "nodemon ./src/server.js --exec babel-node",
       "env": {
         "NODE_ENV": "development",
         "NODE_PATH": "./src",
         "HOST": "localhost",
         "PORT": "3000"
+      }
+    },
+    "start-api": {
+      "command": "babel-node ./api/api.js",
+      "env": {
+        "NODE_ENV": "development",
+        "NODE_PATH": "./api"
       }
     }
   },
@@ -52,6 +61,7 @@
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "node-sass": "^3.8.0",
+    "nodemon": "^1.10.2",
     "postcss-loader": "^0.11.0",
     "react-transform": "^0.0.3",
     "react-transform-hmr": "^1.0.4",
@@ -64,6 +74,7 @@
     "webpack-hot-middleware": "^2.12.2"
   },
   "dependencies": {
+    "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "react": "^15.3.1",
     "react-bootstrap": "^0.30.3",
