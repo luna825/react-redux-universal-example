@@ -1,7 +1,9 @@
+global.__SERVER__ = true;
 import express from 'express'
 import path from 'path'
 import webpack from 'webpack'
 import appCfg from '../cfg/appCfg'
+import httpProxy from 'http-proxy'
 
 //server render
 import React from 'react'
@@ -10,6 +12,15 @@ import { match, RouterContext } from 'react-router'
 import routes from './routes'
 import createWithMiddleware from './redux/create'
 import {Provider} from 'react-redux'
+
+import ApiClient from 'utils/ApiClient'
+
+
+const targetUrl = `http://${appCfg.apiHost}:${appCfg.apiPort}`
+const proxy = httpProxy.createProxyServer({
+  target: targetUrl,
+  ws: true
+});
 
 const app = express()
 
@@ -49,6 +60,24 @@ if(!appCfg.isProduction){
   app.use(webpackHotMiddleware(compiler))
 }
 
+app.use('/api',(req, res) =>{
+  proxy.web(req, res, {target: targetUrl})
+})
+
+// added the error handling to avoid https://github.com/nodejitsu/node-http-proxy/issues/527
+proxy.on('error', (error, req, res) => {
+  let json;
+  if (error.code !== 'ECONNRESET') {
+    console.error('proxy error', error);
+  }
+  if (!res.headersSent) {
+    res.writeHead(500, {'content-type': 'application/json'});
+  }
+
+  json = {error: 'proxy_error', reason: error.message};
+  res.end(JSON.stringify(json));
+});
+
 app.use(express.static(path.join(__dirname,'../dist')))
 
 
@@ -60,7 +89,8 @@ app.use('*', (req, res)=>{
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search)
     } else if (renderProps) {
-      const store = createWithMiddleware()
+      const client = new ApiClient(req);
+      const store = createWithMiddleware(client)
       const state = store.getState()
       const html = renderToString(
         <Provider store={store}>         

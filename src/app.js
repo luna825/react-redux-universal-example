@@ -7,10 +7,13 @@ import routes from './routes'
 import {Provider} from 'react-redux'
 import createWithMiddleware from 'redux/create'
 
+import ApiClient from 'utils/ApiClient'
+
 import './theme/style/Index.scss'
 
+const client = new ApiClient()
 const initState = window.__INITIAL_STATE__
-const store = createWithMiddleware(initState)
+const store = createWithMiddleware(client,initState)
 
 ReactDOM.render(
   <Provider store={store} >

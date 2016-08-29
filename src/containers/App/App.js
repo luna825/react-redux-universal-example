@@ -3,6 +3,8 @@ import React,{Component, PropTypes} from 'react'
 import {IndexLink} from 'react-router'
 import {Navbar, Nav, NavItem} from 'react-bootstrap'
 
+import {InfoBar} from 'components'
+
 
 export default class App extends Component {
   render(){
@@ -20,7 +22,7 @@ export default class App extends Component {
           </Navbar.Header>
         </Navbar>
         <div className="appContent">{this.props.children}</div>
-        <div>App Footer</div>
+        <InfoBar />
       </div>
     )
   }
