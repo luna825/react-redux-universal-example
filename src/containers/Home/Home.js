@@ -15,7 +15,12 @@ export default class Home extends Component {
             </div>
             <h1>React Redux Example</h1>
             <h2>所有React Redux模块最佳实践的示例</h2>
-
+            <p>
+              <a className="github" href="https://github.com/luna825/react-redux-universal-example"
+               target="_blank">
+              <i className="fa fa-github"/>Github源码
+              </a> 
+            </p>
           </div>
         </div>
 
