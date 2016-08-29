@@ -1,7 +1,6 @@
 import React ,{Component, PropTypes} from 'react'
 
 import {Counter} from 'components'
-import logoImage from 'theme/style/logo.png'
 
 export default class Home extends Component {
   render(){
@@ -11,7 +10,7 @@ export default class Home extends Component {
           <div className="container">
             <div className="logo">
               <p>
-                <img src={logoImage} alt=""/>
+                <img src="/assets/logo.png" alt=""/>
               </p>
             </div>
             <h1>React Redux Example</h1>
@@ -19,7 +18,7 @@ export default class Home extends Component {
 
           </div>
         </div>
-        
+
         <div className="container">
           <div className="counterContainer">
             <Counter />
