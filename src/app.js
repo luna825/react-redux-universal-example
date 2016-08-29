@@ -7,6 +7,8 @@ import routes from './routes'
 import {Provider} from 'react-redux'
 import createWithMiddleware from 'redux/create'
 
+import './theme/style/Index.scss'
+
 const store = createWithMiddleware()
 
 ReactDOM.render(

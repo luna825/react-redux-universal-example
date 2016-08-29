@@ -1,0 +1,43 @@
+@import '../varibles.scss';
+
+.home {
+
+}
+
+.masthead{
+  background: #2d2d2d;
+  text-align: center;
+  padding: 40px 20px;
+  color: white;
+  .logo {
+    $size:200px;
+    margin:auto;
+    height: $size;
+    width: $size;
+    border-radius: $size/2;
+    border:1px solid $cyan;
+    box-shadow:inset 0 0 10px $cyan;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      transform: scale(0.75,0.75)
+    }
+  }
+  h1 {
+    color: $cyan;
+  }
+  h2{
+    color: #ddd;
+    font-size: 2em;
+    margin: 20px;
+  }
+  p{
+    margin: 10px;
+  }
+}
+
+.counterContainer {
+  margin:20px;
+  text-align: center;
+}

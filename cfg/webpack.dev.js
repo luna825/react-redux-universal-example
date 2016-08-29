@@ -5,6 +5,7 @@ const projectRootpath = path.resolve(__dirname,'..')
 
 const config = {
   entry:[
+    'bootstrap-loader',
     path.resolve(projectRootpath,'src/app.js')
   ],
   output:{
@@ -22,6 +23,21 @@ const config = {
           presets:['react', 'es2015', 'stage-0'],
           plugins:['transform-decorators-legacy']
         }
+      },
+      {
+        test: /\.css$/,loader:'style-loader!css-loader'
+      },
+      {
+        test:/\.scss/,
+        loader: 'style-loader!css-loader!sass-loader?outputStyle=expanded'
+      },
+      {
+        test:/\.sass/,
+        loader: 'style-loader!css-loader!sass-loader?outputStyle=expanded&indentedSyntax'
+      },
+      {
+        test:/\.(jpg|png)$/,
+        loader:'url?limit=25000'
       }
     ]
   },
