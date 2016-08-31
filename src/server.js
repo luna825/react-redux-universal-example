@@ -89,14 +89,12 @@ app.use('*', (req, res)=>{
   const client = new ApiClient(req);
   const store = createWithMiddleware(client)
 
-  match({routes:getRoutes(store), location: req.url}, (error, redirectLocation, renderProps) =>{
+  match({routes:getRoutes(store), location: req.originalUrl}, (error, redirectLocation, renderProps) =>{
     if (error) {
       res.status(500).send(error.message)
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search)
     } else if (renderProps) {
-
-      const state = store.getState()
       // loadOnServer参数是{}
       loadOnServer({...renderProps, store}).then(()=>{
         const html = renderToString(
@@ -105,7 +103,7 @@ app.use('*', (req, res)=>{
           </Provider>
         )
         res.status(200)
-        res.send(renderFullPage(html,state))
+        res.send(renderFullPage(html,store.getState()))
       })
     } else {
       res.status(404).send('Not found')

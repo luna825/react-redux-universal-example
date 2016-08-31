@@ -2,6 +2,7 @@ import React,{Component, PropTypes} from 'react'
 
 import {IndexLink} from 'react-router'
 import {Navbar, Nav, NavItem} from 'react-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap';
 
 import {InfoBar} from 'components'
 
@@ -35,6 +36,16 @@ export default class App extends Component {
             </Navbar.Brand>
             <Navbar.Toggle/>
           </Navbar.Header>
+
+          <Navbar.Collapse>
+            <Nav>
+              <LinkContainer to="/widgets">
+                <NavItem eventKey={2} >Widgets</NavItem>
+              </LinkContainer>
+            </Nav>
+          </Navbar.Collapse>
+
+
         </Navbar>
         <div className="appContent">{this.props.children}</div>
         <InfoBar />
