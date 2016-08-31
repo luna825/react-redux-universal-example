@@ -13,6 +13,10 @@ export function load(){
   }
 }
 
+export function isLoaded(globalState){
+  return globalState.info && globalState.info.loaded;
+}
+
 export default function reducer(state=initialState , action){
   switch(action.type){
     case LOAD:

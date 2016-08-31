@@ -20,6 +20,7 @@ export default class Counter extends Component{
     incrementIfOdd: PropTypes.func.isRequired
   };
 
+
   render(){
     const {counter, increment, incrementIfOdd} = this.props;
     return(

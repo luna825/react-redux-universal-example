@@ -1,8 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {Router, browserHistory} from 'react-router'
+import { renderToString } from 'react-dom/server'
+import {Router, browserHistory, match} from 'react-router'
 
-import routes from './routes'
+import getRoutes from './routes'
+import {ReduxAsyncConnect} from 'redux-async-connect'
 
 import {Provider} from 'react-redux'
 import createWithMiddleware from 'redux/create'
@@ -14,11 +16,34 @@ import './theme/style/Index.scss'
 const client = new ApiClient()
 const initState = window.__INITIAL_STATE__
 const store = createWithMiddleware(client,initState)
+const dest = document.getElementById("app")
+
+const component = (
+  <Router render={(props) => 
+    <ReduxAsyncConnect {...props} /> } 
+    history={browserHistory}>
+    {getRoutes(store)}
+  </Router>
+)
 
 ReactDOM.render(
   <Provider store={store} >
-    <Router history={browserHistory}>
-      {routes}
-    </Router>
+    {component}
   </Provider>
-  ,document.getElementById('app'))
+  ,dest)
+
+if (process.env.NODE_ENV !== 'production') {
+
+  const DevTools = require('containers/Devtools').default
+  const popup = document.getElementById('app')
+  let div = document.createElement('div');
+  div.id = "react-devtools-root"
+
+  setTimeout(() => {
+    popup.appendChild(div);
+    ReactDOM.render(
+      <DevTools store={store} />,
+      document.getElementById('react-devtools-root')
+    );
+  }, 10);
+}

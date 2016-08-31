@@ -5,6 +5,21 @@ import {Navbar, Nav, NavItem} from 'react-bootstrap'
 
 import {InfoBar} from 'components'
 
+import {asyncConnect} from 'redux-async-connect'
+import {isLoaded as isInfoLoaded, load as loadInfo } from 'redux/modules/info'
+
+@asyncConnect([{
+  promise: ({store:{dispatch, getState}}) => {
+
+    const promises = [];
+
+    if (!isInfoLoaded(getState())) {
+      promises.push(dispatch(loadInfo()));
+    }
+
+    return Promise.all(promises);
+  }
+}])
 
 export default class App extends Component {
   render(){

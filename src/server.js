@@ -9,9 +9,12 @@ import httpProxy from 'http-proxy'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { match, RouterContext } from 'react-router'
-import routes from './routes'
+import getRoutes from './routes'
 import createWithMiddleware from './redux/create'
 import {Provider} from 'react-redux'
+
+//async get data
+import {ReduxAsyncConnect, loadOnServer} from 'redux-async-connect'
 
 import ApiClient from 'utils/ApiClient'
 
@@ -31,13 +34,13 @@ const renderFullPage = (html, initialState) => {
       <head>
         <meta charset="utf-8">
         <title>APP Render Server</title>
-        <link rel="stylesheet" type="text/css" href="/assets/app.css">
       </head>
       <body>
         <div id="app">${html}</div>
         <script>
           window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}; 
         </script>
+        
         <script src="/assets/bundle.js"></script>
       </body>
     </html>
@@ -83,21 +86,27 @@ app.use(express.static(path.join(__dirname,'../dist')))
 
 app.use('*', (req, res)=>{
 
-  match({routes, location: req.url}, (error, redirectLocation, renderProps) =>{
+  const client = new ApiClient(req);
+  const store = createWithMiddleware(client)
+
+  match({routes:getRoutes(store), location: req.url}, (error, redirectLocation, renderProps) =>{
     if (error) {
       res.status(500).send(error.message)
     } else if (redirectLocation) {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search)
     } else if (renderProps) {
-      const client = new ApiClient(req);
-      const store = createWithMiddleware(client)
+
       const state = store.getState()
-      const html = renderToString(
-        <Provider store={store}>         
-          <RouterContext {...renderProps} />
-        </Provider>
-      )
-      res.status(200).send(renderFullPage(html, state))
+      // loadOnServer参数是{}
+      loadOnServer({...renderProps, store}).then(()=>{
+        const html = renderToString(
+          <Provider store={store}>         
+            <ReduxAsyncConnect {...renderProps} />
+          </Provider>
+        )
+        res.status(200)
+        res.send(renderFullPage(html,state))
+      })
     } else {
       res.status(404).send('Not found')
     }
