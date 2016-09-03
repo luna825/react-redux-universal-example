@@ -20,7 +20,7 @@ const dest = document.getElementById("app")
 
 const component = (
   <Router render={(props) => 
-    <ReduxAsyncConnect {...props} /> } 
+    <ReduxAsyncConnect {...props} filter={item => !item.deferred} /> } 
     history={browserHistory}>
     {getRoutes(store)}
   </Router>

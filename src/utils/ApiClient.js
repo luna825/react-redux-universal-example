@@ -28,7 +28,7 @@ export default class ApiClient{
           request.send(data)
         }
 
-        request.end((err, res) => err ? reject(err) : resolve(res.body));
+        request.end((err, res) => err ? reject(res.body || err): resolve(res.body))
 
       })
     })
