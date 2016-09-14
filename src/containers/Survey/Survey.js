@@ -1,9 +1,26 @@
 import React, {Component, PropTypes} from 'react'
-import connect from 'react-redux'
 import {SurveyForm} from 'components'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
+import {load} from 'redux/modules/survey'
 
+const data={
+      name: 'Little Bobby Tables',
+      email: 'bobby@gmail.com',
+      occupation: 'Redux Wizard',
+      employed: true,
+      sex: 'male'
+    }
+
+@connect(
+ ()=>({}),
+ dispatch => bindActionCreators({load}, dispatch)
+)
 export default class Survey extends Component {
+
+
   render(){
+    const {load} = this.props;
     return(
       <div className="container">
         <h1>Survey</h1>
@@ -19,9 +36,14 @@ export default class Survey extends Component {
           <li><em>Except</em>当你点击提交时，他们会显示成无效字段</li>
           <li>初始化按键，会将初始整个表单的值</li>
         </ul>
-        <div></div>
+        <div style={{textAlign: 'center', margin: 15}}>
+          <button className="btn btn-primary" onClick={()=>load(data)}>
+            <i className="fa fa-pencil"/> Initialize Form
+          </button>
+        </div>
+
         <p></p>
-        <SurveyForm />
+        <SurveyForm/>
       </div>
     )
   }

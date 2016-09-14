@@ -1,12 +1,14 @@
 import React, {Component, PropTypes} from 'react'
 import {reduxForm, Field} from 'redux-form'
 import surveyValidation from './surveyValidation';
+import {connect} from 'react-redux'
 
 
 
 
 const renderField = 
-  ({ input, label, type, meta: { asyncValidating, touched, error, dirty, visited, active } }) => (
+  ({ input, label, type, meta: { asyncValidating, touched, error, dirty, visited, active } }) => {
+    return(
   <div className={'form-group' + (error && touched ? ' has-error' : '')}>
     <label htmlFor={input.name} className="col-sm-2">{label}</label>
     <div className="col-sm-8 inputGroup">
@@ -21,9 +23,12 @@ const renderField =
       </div>
     </div>
   </div>
+)}
+
+@connect(
+  state =>({initialValues: state.survey.data}),
+  ()=>({})
 )
-
-
 @reduxForm({
   form: "survey",
   validate: surveyValidation,
@@ -36,9 +41,9 @@ export default class SurveyForm extends Component{
     const {handleSubmit, reset} = this.props;
     return(
         <form className="form-horizontal" onSubmit={handleSubmit(data=>{})}>
-          <Field component={renderField} name="name" label="Full Name" />
-          <Field component={renderField} name="email" label="Email" />
-          <Field component={renderField} name="occupation" label="Occupation" />
+          <Field name="name" component={renderField} label="Full Name" type="text"/>
+          <Field component={renderField} name="email" label="Email" type="text"/>
+          <Field component={renderField} name="occupation" label="Occupation" type="text"/>
 
           <div className="form-group">
             <label className="col-sm-2" htmlFor="employed">Employed</label>
