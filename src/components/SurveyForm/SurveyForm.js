@@ -35,7 +35,7 @@ export default class SurveyForm extends Component{
   render(){
     const {handleSubmit, reset} = this.props;
     return(
-        <form className="form-horizontal" onSubmit={handleSubmit(data=>{})}>
+        <form className="form-horizontal" onSubmit={handleSubmit}>
           <Field component={renderField} name="name" label="Full Name" />
           <Field component={renderField} name="email" label="Email" />
           <Field component={renderField} name="occupation" label="Occupation" />

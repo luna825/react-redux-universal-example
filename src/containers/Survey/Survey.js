@@ -1,8 +1,28 @@
 import React, {Component, PropTypes} from 'react'
-import connect from 'react-redux'
+import {connect} from 'react-redux'
 import {SurveyForm} from 'components'
+import {initialize} from 'redux-form';
 
+@connect(
+  ()=>({}),
+  {initialize}
+)
 export default class Survey extends Component {
+
+  handleInitialize = () => {
+    this.props.initialize('survey', {
+      name: 'Little',
+      email: 'bobby33@gmail.com',
+      occupation: 'Redux Wizard',
+      employed: true,
+      sex: 'male'
+    });
+  }
+
+  handleSubmit(){
+    this.props.initialize('survey',{})
+  }
+
   render(){
     return(
       <div className="container">
@@ -19,9 +39,13 @@ export default class Survey extends Component {
           <li><em>Except</em>当你点击提交时，他们会显示成无效字段</li>
           <li>初始化按键，会将初始整个表单的值</li>
         </ul>
-        <div></div>
+        <div style={{textAlign: 'center', margin: 15}}>
+          <button className="btn btn-primary" onClick={this.handleInitialize}>
+            <i className="fa fa-pencil"/> Initialize Form
+          </button>
+        </div>
         <p></p>
-        <SurveyForm />
+        <SurveyForm onSubmit={this.handleSubmit.bind(this)}/>
       </div>
     )
   }
