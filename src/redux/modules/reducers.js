@@ -5,6 +5,7 @@ import {reducer as reduxAsyncConnect} from 'redux-async-connect'
 import counter from './counter'
 import info from './info'
 import widgets from './widgets'
+import auth from './auth'
 import { reducer as formReducer } from 'redux-form'
 
 const rootReducer = combineReducers({
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   info,
   reduxAsyncConnect,
   widgets,
-  form:formReducer
+  form:formReducer,
+  auth
 })
 
 export default rootReducer

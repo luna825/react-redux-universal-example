@@ -50,6 +50,10 @@ export default class App extends Component {
               <LinkContainer to="/about">
                 <NavItem eventKey={4}>About</NavItem>
               </LinkContainer>
+
+              <LinkContainer to="/login">
+                <NavItem eventKey={5}>Login</NavItem>
+              </LinkContainer>
             </Nav>
           </Navbar.Collapse>
 

@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {MiniInfoBar} from 'components'
 
 
 export default class About extends Component {
@@ -21,6 +22,7 @@ export default class About extends Component {
         <p>这是项目是我学习Erik Rasmussen的照搬作品，只是整个react redux开发过程的一个熟悉，没原创性.非常感谢原作者的开源</p>
         <h3>Mini Bar <span style={{color: '#aaa'}}>(not that kind)</span></h3>
         <p>Hey!这里你将看到一个迷你的infoBar.显示的信息与infoBar相同</p>
+        <MiniInfoBar />
         <h3>图片</h3>
         <p>
           你想看这只猫么?

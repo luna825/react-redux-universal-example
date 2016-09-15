@@ -3,9 +3,17 @@ import bodyParser from 'body-parser'
 import config from '../cfg/appCfg'
 import {mapUrl} from './utils/url'
 import * as actions from './actions'
+import session from 'express-session'
 
 const app = express()
 
+
+app.use(session({
+  secret: 'react and redux rule!!!!',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 60000 }
+}))
 app.use(bodyParser.json())
 
 app.use((req, res)=>{
