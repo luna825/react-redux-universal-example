@@ -8,6 +8,7 @@ import {InfoBar} from 'components'
 
 import {asyncConnect} from 'redux-async-connect'
 import {isLoaded as isInfoLoaded, load as loadInfo } from 'redux/modules/info'
+import {isLoaded as isAuthLoaded, load as loadAuth } from 'redux/modules/auth'
 
 @asyncConnect([{
   promise: ({store:{dispatch, getState}}) => {
@@ -16,6 +17,10 @@ import {isLoaded as isInfoLoaded, load as loadInfo } from 'redux/modules/info'
 
     if (!isInfoLoaded(getState())) {
       promises.push(dispatch(loadInfo()));
+    }
+
+    if(!isAuthLoaded(getState())){
+      promises.push(dispatch(loadAuth()));
     }
 
     return Promise.all(promises);
