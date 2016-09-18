@@ -1,6 +1,7 @@
 import React,{Component, PropTypes} from 'react'
+import {connect} from 'react-redux'
 
-import {IndexLink} from 'react-router'
+import {IndexLink,browserHistory} from 'react-router'
 import {Navbar, Nav, NavItem} from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap';
 
@@ -8,7 +9,7 @@ import {InfoBar} from 'components'
 
 import {asyncConnect} from 'redux-async-connect'
 import {isLoaded as isInfoLoaded, load as loadInfo } from 'redux/modules/info'
-import {isLoaded as isAuthLoaded, load as loadAuth } from 'redux/modules/auth'
+import {isLoaded as isAuthLoaded, load as loadAuth, logout } from 'redux/modules/auth'
 
 @asyncConnect([{
   promise: ({store:{dispatch, getState}}) => {
@@ -26,9 +27,31 @@ import {isLoaded as isAuthLoaded, load as loadAuth } from 'redux/modules/auth'
     return Promise.all(promises);
   }
 }])
-
+@connect(
+  state=>({user: state.auth.user}),
+  {logout}
+)
 export default class App extends Component {
+  static propTypes={
+    logout: PropTypes.func.isRequired,
+    user: PropTypes.object
+  };
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.user && nextProps.user){
+      browserHistory.push('/loginSuccess')
+    }else if (this.props.user && !nextProps.user){
+      browserHistory.push('/')
+    }
+  }
+
+  handleLogout = (event) => {
+    event.preventDefault();
+    this.props.logout();
+  };
+
   render(){
+    const {user} = this.props;
     return(
       <div className="app">
         <Navbar fixedTop>
@@ -56,9 +79,18 @@ export default class App extends Component {
                 <NavItem eventKey={4}>About</NavItem>
               </LinkContainer>
 
+              {!user &&
               <LinkContainer to="/login">
                 <NavItem eventKey={5}>Login</NavItem>
               </LinkContainer>
+              }
+
+              {user &&
+              <LinkContainer to="/logout">
+                <NavItem eventKey={6} onClick={this.handleLogout}>Login</NavItem>
+              </LinkContainer>
+              }
+
             </Nav>
           </Navbar.Collapse>
 
