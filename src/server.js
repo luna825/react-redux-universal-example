@@ -4,6 +4,7 @@ import path from 'path'
 import webpack from 'webpack'
 import appCfg from '../cfg/appCfg'
 import httpProxy from 'http-proxy'
+import http from 'http'
 
 //server render
 import React from 'react'
@@ -26,6 +27,7 @@ const proxy = httpProxy.createProxyServer({
 });
 
 const app = express()
+const server = new http.Server(app)
 
 const renderFullPage = (html, initialState) => {
   return `
@@ -65,6 +67,14 @@ if(!appCfg.isProduction){
 
 app.use('/api',(req, res) =>{
   proxy.web(req, res, {target: targetUrl})
+})
+
+app.use('/ws',(req, res)=>{
+  proxy.web(req, res, {target: targetUrl + '/ws'})
+})
+
+server.on('upgrade',(req, socket, head)=>{
+  proxy.ws(req, socket, head)
 })
 
 // added the error handling to avoid https://github.com/nodejitsu/node-http-proxy/issues/527
@@ -113,7 +123,7 @@ app.use('*', (req, res)=>{
 })
 
 if (appCfg.port){
-  app.listen(appCfg.port,appCfg.host,(err) =>{
+  server.listen(appCfg.port,appCfg.host,(err) =>{
     if (err){
       console.log(err)
     }else{

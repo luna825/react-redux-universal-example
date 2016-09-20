@@ -10,6 +10,7 @@ import {Provider} from 'react-redux'
 import createWithMiddleware from 'redux/create'
 
 import ApiClient from 'utils/ApiClient'
+import io from 'socket.io-client'
 
 import './theme/style/Index.scss'
 
@@ -17,6 +18,22 @@ const client = new ApiClient()
 const initState = window.__INITIAL_STATE__
 const store = createWithMiddleware(client,initState)
 const dest = document.getElementById("app")
+
+function initSocket(){
+  const socket = io('',{path: '/ws'});
+  socket.on('news', (data)=>{
+    console.log(data);
+    socket.emit('my other event', { my: 'data from client' });
+  })
+
+  socket.on('msg',(data) => {
+    console.log(data)
+  })
+
+  return socket
+}
+
+global.socket = initSocket()
 
 const component = (
   <Router render={(props) => 

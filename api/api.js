@@ -4,8 +4,14 @@ import config from '../cfg/appCfg'
 import {mapUrl} from './utils/url'
 import * as actions from './actions'
 import session from 'express-session'
+import http from 'http'
+import socketIO from 'socket.io'
 
 const app = express()
+const server = new http.Server(app)
+
+const io = socketIO(server)
+io.path('/ws')
 
 
 app.use(session({
@@ -44,12 +50,40 @@ app.use((req, res)=>{
 
 })
 
+
+const bufferSize = 100;
+const messageBuffer = new Array(bufferSize);
+let messageIndex = 0;
+
 if(config.apiPort){
-  app.listen(config.apiPort, (err) =>{
+  const runnable = app.listen(config.apiPort, (err) =>{
     if(err){
       console.log(err)
     }else{
       console.info('APIServer is running at %d',config.apiPort)
     }
   })
+
+  io.on('connection', (socket) =>{
+    socket.emit('news', {msg: `'Hello world!' from server`})
+
+    socket.on('history', ()=>{
+      for (let index = 0; index < bufferSize; index++){
+        const msgNo = (messageIndex + index ) % bufferSize;
+        const msg = messageBuffer[msgNo]
+        if (msg){
+          socket.emit('msg',msg)
+        }
+      }
+    })
+
+    socket.on('msg',(data) =>{
+      data.id = messageIndex;
+      messageBuffer[messageIndex % bufferSize] = data;
+      messageIndex++ ;
+      io.emit('msg',data)
+    })
+  })
+
+  io.listen(runnable)
 }

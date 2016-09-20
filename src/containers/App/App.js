@@ -67,6 +67,13 @@ export default class App extends Component {
 
           <Navbar.Collapse>
             <Nav>
+              {user &&
+              <LinkContainer to="/chat">
+                <NavItem eventKey={1}>Chat</NavItem>
+              </LinkContainer>
+              }
+
+
               <LinkContainer to="/widgets">
                 <NavItem eventKey={2} >Widgets</NavItem>
               </LinkContainer>
@@ -87,7 +94,7 @@ export default class App extends Component {
 
               {user &&
               <LinkContainer to="/logout">
-                <NavItem eventKey={6} onClick={this.handleLogout}>Login</NavItem>
+                <NavItem eventKey={6} onClick={this.handleLogout}>logout</NavItem>
               </LinkContainer>
               }
 
